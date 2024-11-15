@@ -1,7 +1,9 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const payementRouter = require('./routes/payementRouter');
 const app = express();
+
+/// Traiter les requetes json
+app.use(express.json());
 
 /// Autoriser les appels de toutes origines
 app.use((req, res, next) => {
@@ -11,12 +13,7 @@ app.use((req, res, next) => {
     next();
 });
 
-/// Traiter les requetes json
-app.use(express.json());
-app.use(bodyParser.json());
 
 /// Utiliser le payement router pour les requetes du scoot-api/payements
-app.post('/scoot-api/payements',payementRouter);
-
-
+app.use('/scoot-api/payements',payementRouter);
 module.exports = app;
