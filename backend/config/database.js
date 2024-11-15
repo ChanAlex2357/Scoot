@@ -1,7 +1,7 @@
 // config/database.js
 const { Sequelize } = require('sequelize');
 
-const sequelize = new Sequelize('database_name', 'username', 'password', {
+const sequelize = new Sequelize('scoot', 'root', '', {
   host: 'localhost',
   dialect: 'mysql' // ou 'postgres', 'sqlite', 'mariadb' selon ta base de données
 });
