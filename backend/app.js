@@ -1,9 +1,9 @@
 const express = require('express');
-
+const bodyParser = require('body-parser');
+const payementRouter = require('./routes/payementRouter');
 const app = express();
 
-app.use(express.json());
-
+/// Autoriser les appels de toutes origines
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
@@ -11,19 +11,12 @@ app.use((req, res, next) => {
     next();
 });
 
+/// Traiter les requetes json
+app.use(express.json());
+app.use(bodyParser.json());
 
-app.post('/scoot-api/payements',(req, res, next) => {
-    console.log('Operation d\'insertion de payement');
-    console.log(req.body);
-    res.status(201).json({
-        message:"Donnee de payement"
-    });
-});
+/// Utiliser le payement router pour les requetes du scoot-api/payements
+app.post('/scoot-api/payements',payementRouter);
 
-
-app.use('/scoot-api/payements',(req, res, next) => {
-  console.log('Liste des payements !');
-  next();
-});
 
 module.exports = app;
