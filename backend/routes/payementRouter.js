@@ -12,7 +12,15 @@ router.post('/', (req,res,next) => {
     datePayement: String(datePayement)
   });
   // Répondre avec un message de confirmation
-  res.status(201).json({ message: 'Données reçues', data: { IdIdentification, Montant, datePayement } });
+  res.status(201).json(
+    { 
+      message: 'Données reçues BACKEND',
+      data: {
+        IdIdentification,
+        Montant, 
+        datePayement 
+      } 
+    });
 });
 
 module.exports = router;
