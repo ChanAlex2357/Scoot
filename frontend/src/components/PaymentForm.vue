@@ -1,6 +1,6 @@
 <template>
     <div class="payment-form">
-      <h2>Paiement</h2>
+      <h2>Insertion Paiement</h2>
       <form @submit.prevent="submitForm">
         <div class="form-group">
           <label for="id-identification">ID Identification :</label>

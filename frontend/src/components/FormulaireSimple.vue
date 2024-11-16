@@ -1,26 +1,23 @@
-<template>
-    <div>
-      <h1>Gestion des paiements</h1>
-      <PaymentForm @submit-payment="handlePayment" />
-    </div>
-  </template>
-  
-  <script>
-  import PaymentForm from "./PaymentForm.vue";
-  
-  export default {
+<script>
+    import PaymentForm from "./PaymentForm.vue";
+
+    export default {
     components: {
-      PaymentForm,
+        PaymentForm,
     },
     methods: {
-      handlePayment(paymentData) {
+        handlePayment(paymentData) {
         console.log("Données de paiement reçues :", paymentData);
-  
+
         // Envoyer les données à une API ou les traiter
         // Exemple : utiliser fetch ou axios
         // axios.post('/scoot-api/payement', paymentData).then(...);
-      },
+        },
     },
-  };
-  </script>
-  
+};
+</script>
+<template>
+    <div>
+      <PaymentForm @submit-payment="handlePayment" />
+    </div>
+</template>
