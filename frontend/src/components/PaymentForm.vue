@@ -36,7 +36,7 @@
     </div>
   </template>
   
-  <script>
+<script>
   export default {
     name: "PaymentForm",
     data() {
@@ -62,9 +62,9 @@
       },
     },
   };
-  </script>
+</script>
   
-  <style scoped>
+<style scoped>
   .payment-form {
     max-width: 400px;
     margin: auto;
@@ -98,5 +98,5 @@
   button:hover {
     background-color: #0056b3;
   }
-  </style>
+</style>
   
