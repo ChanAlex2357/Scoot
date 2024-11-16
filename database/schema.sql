@@ -1,20 +1,19 @@
 -- Création de la base de données si elle n'existe pas
-CREATE DATABASE IF NOT EXISTS ScootDB;
-USE ScootDB;
+CREATE DATABASE IF NOT EXISTS scoot;
+USE scoot;
 
 -- Création de la table Identification
 CREATE TABLE IF NOT EXISTS Identification (
-    idIdentification INT AUTO_INCREMENT PRIMARY KEY, -- Clé primaire pour chaque identification
-    code VARCHAR(50) NOT NULL UNIQUE,                -- Code unique d'identification
+    idIdentification INT AUTO_INCREMENT PRIMARY KEY,                -- Code unique d'identification
     nom VARCHAR(100) NOT NULL,                       -- Nom de l'identification
-    role_id INT NOT NULL,                            -- Clé étrangère pour le rôle
+    categorie_id INT NOT NULL,                            -- Clé étrangère pour le rôle
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Date de création
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- Date de mise à jour
 );
 
--- Création de la table Role
-CREATE TABLE IF NOT EXISTS Role (
-    idRole INT AUTO_INCREMENT PRIMARY KEY,          -- Clé primaire pour chaque rôle
+-- Création de la table Categorie
+CREATE TABLE IF NOT EXISTS Categorie (
+    idCategorie INT AUTO_INCREMENT PRIMARY KEY,          -- Clé primaire pour chaque rôle
     nom VARCHAR(50) NOT NULL UNIQUE,                -- Nom du rôle
     montantAPayer DOUBLE NOT NULL DEFAULT 0,        -- Montant à payer associé au rôle
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Date de création
