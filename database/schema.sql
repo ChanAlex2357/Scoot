@@ -38,7 +38,6 @@ CREATE TABLE IF NOT EXISTS Payement (
 
     select sum(montantAPayer) from identification_cpl;
 
-
 SELECT 
     SUM(iden.montantAPayer) AS montantEstime,
     COALESCE(SUM(p.Montant), 0) AS montantRecolte,
