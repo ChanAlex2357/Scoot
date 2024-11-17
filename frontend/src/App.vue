@@ -3,40 +3,58 @@ import FormulaireSimple from './components/FormulaireSimple.vue'
 </script>
 
 <template>
-  <header>
-    
-  </header>
-
-  <main>
-    <FormulaireSimple />
-  </main>
+  <div class="app">
+    <nav class="navigation">
+      <ul>
+        <li>
+          <router-link to="/insertion-simple">Insertion Payement</router-link>
+        </li>
+        <li>
+          <router-link to="/controle-payement">Controle Payement</router-link>
+        </li>
+      </ul>
+    </nav>
+    <main>
+      <router-view />
+    </main>
+  </div>
 </template>
 
+<script>
+export default {
+  name: "App",
+};
+</script>
+
 <style scoped>
-header {
-  line-height: 1.5;
+.navigation {
+  background-color: #f4f4f4;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+.navigation ul {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
+.navigation li {
+  margin-right: 20px;
+}
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
+.navigation a {
+  text-decoration: none;
+  color: #007bff;
+}
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+.navigation a:hover {
+  text-decoration: underline;
+}
+
+main {
+  padding: 20px;
 }
 </style>
+
