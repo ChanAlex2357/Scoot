@@ -14,7 +14,7 @@ const PayementSummary = {
       SELECT 
           SUM(iden.montantAPayer) AS montantEstime,
           COALESCE(SUM(p.Montant), 0) AS montantRecolte,
-          (SUM(iden.montantAPayer) - COALESCE(SUM(p.Montant), 0)) AS montantARemonter
+          (SUM(iden.montantAPayer) - COALESCE(SUM(p.Montant), 0)) AS montantARecolter
       FROM 
           identification_cpl AS iden
       LEFT JOIN 
