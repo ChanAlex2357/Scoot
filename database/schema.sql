@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS Identification (
 -- Création de la table Categorie
 CREATE TABLE IF NOT EXISTS Categorie (
     idCategorie INT AUTO_INCREMENT PRIMARY KEY,          -- Clé primaire pour chaque rôle
-    nom VARCHAR(50) NOT NULL UNIQUE,                -- Nom du rôle
+    nomCategorie VARCHAR(50) NOT NULL UNIQUE,                -- Nom du rôle
     montantAPayer DOUBLE NOT NULL DEFAULT 0        -- Montant à payer associé au rôle
 );
 
@@ -26,3 +26,14 @@ CREATE TABLE IF NOT EXISTS Payement (
     CONSTRAINT fk_payement_identification FOREIGN KEY (idIdentification)
         REFERENCES Identification (idIdentification) ON DELETE CASCADE
 );
+
+
+-- recuperer Les montants resultat
+
+    -- Le montan a payer pour une annee
+    create or replace view identification_cpl as 
+    select iden.* , cat.nomCategorie , cat.montantAPayer
+    from Identification as iden
+    Join Categorie as cat on iden.idCategorie = cat.idCategorie;
+    
+    select sum(montantAPayer) from identification_cpl;

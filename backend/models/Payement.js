@@ -37,6 +37,7 @@ Payement.init({
 
 // Functions for data manipulation
 Payement.createPayement = async (data) => {
+  console.log(data);
   return await Payement.create(data);
 };
 

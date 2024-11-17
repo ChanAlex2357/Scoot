@@ -23,7 +23,6 @@ router.post('/', async (req, res, next) => {
 
     // Assuming payementModel has a method to save the payment data
     const newPayement = await payementModel.createPayement({
-      NULL,
       datePayement,
       Montant,
       IdIdentification
@@ -34,6 +33,7 @@ router.post('/', async (req, res, next) => {
       data: newPayement
     });
   } catch(error) {
+    console.error(error);
     res.status(400).json({
       error: error
     });
