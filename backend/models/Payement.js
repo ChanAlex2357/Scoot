@@ -1,9 +1,11 @@
 // models/Payement.js
-const { DataTypes } = require('sequelize');
+const { DataTypes, Model } = require('sequelize');
 const sequelize = require('../config/database');
-const Identification = require('./Identification');
+const Identification = require('./Identification'); // Ensure correct path
 
-const Payement = sequelize.define('Payement', {
+class Payement extends Model {}
+
+Payement.init({
   IdPayement: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -26,9 +28,32 @@ const Payement = sequelize.define('Payement', {
     }
   }
 }, {
+  sequelize,
+  modelName: 'Payement',
   tableName: 'Payement',
   timestamps: false
 });
 
-Payement.belongsTo(Identification, { foreignKey: 'IdIdentification' });
+
+// Functions for data manipulation
+Payement.createPayement = async (data) => {
+  return await Payement.create(data);
+};
+
+Payement.getAllPayements = async () => {
+  return await Payement.findAll();
+};
+
+Payement.getPayementById = async (id) => {
+  return await Payement.findByPk(id);
+};
+
+Payement.updatePayement = async (id, data) => {
+  return await Payement.update(data, { where: { IdPayement: id } });
+};
+
+Payement.deletePayement = async (id) => {
+  return await Payement.destroy({ where: { IdPayement: id } });
+};
+
 module.exports = Payement;
