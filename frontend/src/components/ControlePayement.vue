@@ -63,35 +63,47 @@
   </template>
   
   <script>
-  export default {
-    data() {
-      return {
-        annee: "",
-        montantEstime: 40000,
-        montantRecolte: 10000,
-        montantARecolter: 30000,
-        details: [
-          // Exemple de données
-          // À remplacer avec des données récupérées de l'API
-          { idIdentification: 1, nom: "Jean Dupont", categorie: "A", montantAPayer: 1500 },
-          { idIdentification: 2, nom: "Marie Curie", categorie: "B", montantAPayer: 2000 },
-        ],
-      };
+import axios from "axios";
+
+export default {
+  data() {
+    return {
+      annee: "",
+      montantEstime: 0,
+      montantRecolte: 0,
+      montantARecolter: 0,
+      details: [],
+    };
+  },
+  computed: {
+    total() {
+      return this.details.reduce((sum, detail) => sum + detail.montantAPayer, 0);
     },
-    computed: {
-      total() {
-        return this.details.reduce((sum, detail) => sum + detail.montantAPayer, 0);
-      },
+  },
+  methods: {
+    async fetchData() {
+      try {
+        // Appel API avec l'année
+        const response = await axios.get("http://localhost:3000/scoot-api/summary", {
+          params: { annee: this.annee },
+        });
+        const data = response.data;
+
+        // Mettre à jour les données du composant avec la réponse
+        this.montantEstime = data.montantEstime;
+        this.montantRecolte = data.montantRecolte;
+        this.montantARecolter = data.montantARecolter;
+        // this.details = data.details;
+        console.log("Données récupérées :", data);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des données :", error.response?.data || error.message);
+        alert("Impossible de récupérer les données. Veuillez réessayer.");
+      }
     },
-    methods: {
-      fetchData() {
-        // Simulation d'un appel API pour récupérer les données
-        console.log("Récupérer les données pour l'année :", this.annee);
-        // Exemple : Mettre à jour les détails et montants ici
-      },
-    },
-  };
-  </script>
+  },
+};
+</script>
+
   
   <style scoped>
   .controle-paiement {
