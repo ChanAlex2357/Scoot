@@ -84,7 +84,7 @@ export default {
     async fetchData() {
       try {
         // Appel API avec l'année
-        const response = await axios.get("http://localhost:3000/scoot-api/summary", {
+        const response = await axios.get("http://localhost:3000/sccot-api/summary", {
           params: { annee: this.annee },
         });
         const data = response.data;
