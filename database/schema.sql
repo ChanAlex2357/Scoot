@@ -60,7 +60,7 @@ SELECT
     cat.nomCategorie,
     cat.montantAPayer,
     COALESCE(SUM(p.Montant), 0) AS montantRecolte,
-    (cat.montantAPayer - COALESCE(SUM(p.Montant), 0)) AS montantARemonter
+    (cat.montantAPayer - COALESCE(SUM(p.Montant), 0)) AS montantARecolter
 FROM 
     Identification AS iden
 JOIN 
