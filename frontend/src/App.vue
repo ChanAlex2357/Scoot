@@ -7,10 +7,13 @@ import FormulaireSimple from './components/FormulaireSimple.vue'
     <nav class="navigation">
       <ul>
         <li>
-          <router-link to="/insertion-simple">Insertion Payement</router-link>
+          <router-link to="/insertion-simple">Insertion Simple</router-link>
         </li>
         <li>
           <router-link to="/controle-payement">Controle Payement</router-link>
+        </li>
+        <li>
+          <router-link to="/insertion-multiple">Insertion Multiple</router-link>
         </li>
       </ul>
     </nav>
