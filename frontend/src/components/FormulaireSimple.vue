@@ -1,23 +1,35 @@
 <script>
-    import PaymentForm from "./PaymentForm.vue";
+import axios from "axios";
+import PaymentForm from "./PaymentForm.vue";
 
-    export default {
-    components: {
-        PaymentForm,
+export default {
+  components: {
+    PaymentForm,
+  },
+  methods: {
+    handlePayment(paymentData) {
+      // Envoi de la requête POST via Axios
+      axios
+        .post("http://localhost:3000/scoot-api/payements", paymentData)
+        .then((response) => {
+          console.log("Paiement ajouté avec succès:", response.data);
+          alert("Paiement ajouté avec succès !");
+        })
+        .catch((error) => {
+          console.error(
+            "Erreur lors de l’ajout du paiement:",
+            error.response?.data || error.message
+          );
+          alert("Une erreur est survenue lors du paiement : "+error.response.data.message);
+        });
     },
-    methods: {
-        handlePayment(paymentData) {
-        console.log("Données de paiement reçues :", paymentData);
-
-        // Envoyer les données à une API ou les traiter
-        // Exemple : utiliser fetch ou axios
-        // axios.post('/scoot-api/payement', paymentData).then(...);
-        },
-    },
+  },
 };
 </script>
+
 <template>
-    <div>
-      <PaymentForm @submit-payment="handlePayment" />
-    </div>
+  <div>
+    <!-- Utilisation du composant PaymentForm -->
+    <PaymentForm @submit-payment="handlePayment" />
+  </div>
 </template>
