@@ -24,7 +24,7 @@ const PayementSummary = {
           YEAR(p.DatePayement) = :year -- Limiter les paiements à l'année spécifiée
           OR p.DatePayement IS NULL;
     `;
-
+    
     try {
       const result = await sequelize.query(query, {
         type: QueryTypes.SELECT,

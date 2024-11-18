@@ -50,7 +50,7 @@
             <tr v-for="detail in details" :key="detail.id">
               <td>{{ detail.idIdentification }}</td>
               <td>{{ detail.nom }}</td>
-              <td>{{ detail.categorie }}</td>
+              <td>{{ detail.nomCategorie }}</td>
               <td>{{ detail.montantAPayer }}</td>
             </tr>
           </tbody>
@@ -88,12 +88,13 @@ export default {
           params: { annee: this.annee },
         });
         const data = response.data;
-
+        const summary = data.summary;
         // Mettre à jour les données du composant avec la réponse
-        this.montantEstime = data.montantEstime;
-        this.montantRecolte = data.montantRecolte;
-        this.montantARecolter = data.montantARecolter;
-        // this.details = data.details;
+        
+        this.montantEstime = summary.montantEstime;
+        this.montantRecolte = summary.montantRecolte;
+        this.montantARecolter = summary.montantARecolter;
+        this.details = data.unpaidDetails;
         console.log("Données récupérées :", data);
       } catch (error) {
         console.error("Erreur lors de la récupération des données :", error.response?.data || error.message);
