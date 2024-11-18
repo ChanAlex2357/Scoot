@@ -20,7 +20,7 @@ export default {
             "Erreur lors de l’ajout du paiement:",
             error.response?.data || error.message
           );
-          alert("Une erreur est survenue lors du paiement. Veuillez réessayer.");
+          alert("Une erreur est survenue lors du paiement : "+error.response.data.message);
         });
     },
   },

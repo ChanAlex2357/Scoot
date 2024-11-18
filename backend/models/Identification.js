@@ -29,7 +29,6 @@ Identification.init({
   tableName: 'Identification',
   timestamps: false
 });
-
 // Functions to manipulate data
 Identification.createIdentification = async (data) => {
   return await Identification.create(data);

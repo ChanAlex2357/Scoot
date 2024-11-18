@@ -15,7 +15,7 @@ Categorie.init({
     type: DataTypes.STRING,
     allowNull: false
   },
-  montantAnnuel: {
+  montantAPayer: {
     type: DataTypes.FLOAT,
     allowNull: false
   }

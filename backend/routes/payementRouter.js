@@ -22,20 +22,24 @@ router.post('/', async (req, res, next) => {
     });
 
     // Assuming payementModel has a method to save the payment data
-    const newPayement = await payementModel.createPayement({
-      NULL,
+    const resulat = await payementModel.createPayement({
       datePayement,
       Montant,
       IdIdentification
     });
-    
-    res.status(201).json({
-      message: 'Données reçues BACKEND',
-      data: newPayement
-    });
+    console.log(resulat);
+    if ( resulat.success ){
+      res.status(201).json({
+        message: resulat.message,
+        data: resulat.paye
+      });
+    }
+    else {
+      res.status(400).json(resulat);
+    }
   } catch(error) {
     res.status(400).json({
-      error: error
+      error: resulat.error
     });
   }; 
 });
