@@ -1,8 +1,11 @@
 // models/Categorie.js
-const { DataTypes } = require('sequelize');
+const { DataTypes, Model } = require('sequelize');
 const sequelize = require('../config/database');
+const Identification = require('./Identification'); // Ensure correct path
 
-const Categorie = sequelize.define('Categorie', {
+class Categorie extends Model {}
+
+Categorie.init({
   IdCategorie: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -12,13 +15,18 @@ const Categorie = sequelize.define('Categorie', {
     type: DataTypes.STRING,
     allowNull: false
   },
-  montantAnnuel: {
+  montantAPayer: {
     type: DataTypes.FLOAT,
     allowNull: false
   }
 }, {
+  sequelize,
+  modelName: 'Categorie',
   tableName: 'Categorie',
   timestamps: false
 });
+
+// Relations
+// Categorie.hasMany(Identification, { foreignKey: 'IdCategorie' }); // Define the relationship
 
 module.exports = Categorie;
