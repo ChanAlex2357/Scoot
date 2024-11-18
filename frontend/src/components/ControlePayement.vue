@@ -37,7 +37,11 @@
       <!-- Tableau des détails -->
       <div class="details-paiement">
         <h2>Details Controle Payement</h2>
+        <div class="total">
+          <strong>TOTAL : {{ total }}</strong>
+        </div>
         <table>
+
           <thead>
             <tr>
               <th>IdIdentification</th>
@@ -55,9 +59,7 @@
             </tr>
           </tbody>
         </table>
-        <div class="total">
-          <strong>TOTAL : {{ total }}</strong>
-        </div>
+        
       </div>
     </div>
   </template>

@@ -1,5 +1,5 @@
 // models/Payement.js
-const { DataTypes, Model } = require('sequelize');
+const { DataTypes, Model ,QueryTypes} = require('sequelize');
 const sequelize = require('../config/database');
 const Identification = require('./Identification'); // Ensure correct path
 
@@ -36,19 +36,24 @@ Payement.init({
 
 
 Payement.createPayement = async (data) => {
-  const { datePayement, montant, IdIdentification } = data;
-
+  const {datePayement, Montant, IdIdentification } = data;
+  console .log({datePayement, Montant, IdIdentification });
   try {
+    // Formatage de la date en 'YYYY-MM-DD'
+    const date = new Date(datePayement);
+    console.log(date)
+    const formatedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+    console.log(formatedDate);
     // Requête brute pour insérer un paiement
     const query = `
       INSERT INTO Payement (datePayement, montant, IdIdentification)
-      VALUES (:datePayement, :montant, :IdIdentification)
+      VALUES (:formatedDate, :Montant, :IdIdentification)
     `;
     await sequelize.query(query, {
       type: QueryTypes.INSERT,
       replacements: {
-        datePayement,
-        montant,
+        formatedDate,
+        Montant,
         IdIdentification
       }
     });
