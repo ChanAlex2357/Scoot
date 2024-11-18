@@ -1,6 +1,7 @@
 const express = require('express');
 const payementRouter = require('./routes/payementRouter');
 const controleRouter = require('./routes/controleRouter');
+const multipleRouter = require('./routes/payementMultipleRouter');
 const app = express();
 
 /// Traiter les requetes json
@@ -18,4 +19,5 @@ app.use((req, res, next) => {
 /// Utiliser le payement router pour les requetes du scoot-api/payements
 app.use('/scoot-api/payements',payementRouter);
 app.use('/sccot-api/summary',controleRouter);
+app.use('/sccot-api/payementMultiple',multipleRouter);
 module.exports = app;

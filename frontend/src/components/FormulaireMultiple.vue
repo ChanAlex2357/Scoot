@@ -24,7 +24,7 @@
             <td>
               <input
                 type="number"
-                v-model="payement.montant"
+                v-model="payement.Montant"
                 class="form-control"
                 step="0.01"
                 min="0"
@@ -72,7 +72,7 @@
         payements: [
           {
             datePayement: "",
-            montant: "",
+            Montant: "",
             IdIdentification: "",
           },
         ],
@@ -84,7 +84,7 @@
       addPayement() {
         this.payements.push({
           datePayement: "",
-          montant: "",
+          Montant: "",
           IdIdentification: "",
         });
       },
@@ -95,15 +95,14 @@
         try {
           // Vérification des données avant soumission
           for (const payement of this.payements) {
-            if (!payement.datePayement || !payement.montant || !payement.IdIdentification) {
+            if (!payement.datePayement || !payement.Montant || !payement.IdIdentification) {
               this.message = "Tous les champs doivent être remplis.";
               this.success = false;
               return;
             }
           }
-  
           // Appel à l'API pour insérer les paiements
-          const response = await axios.post("/api/payements", { payements: this.payements });
+          const response = await axios.post("http://localhost:3000/sccot-api/payementMultiple", { payements: this.payements });
   
           // Afficher un message de succès
           this.message = "Paiements insérés avec succès.";
@@ -113,7 +112,7 @@
           this.payements = [
             {
               datePayement: "",
-              montant: "",
+              Montant: "",
               IdIdentification: "",
             },
           ];
