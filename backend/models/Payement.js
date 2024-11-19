@@ -1,26 +1,25 @@
-// models/Payement.js
-const { DataTypes, Model ,QueryTypes} = require('sequelize');
+const { DataTypes, Model, QueryTypes } = require('sequelize');
 const sequelize = require('../config/database');
-const Identification = require('./Identification'); // Ensure correct path
+const Identification = require('./Identification');
 const Categorie = require('./Categorie');
 
 class Payement extends Model {}
 
 Payement.init({
-  IdPayement: {
+  idPayement: { // Utilisation de camelCase pour PostgreSQL
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
   datePayement: {
-    type: DataTypes.DATE,
+    type: DataTypes.DATEONLY, // DATEONLY pour éviter le stockage inutile de l'heure
     allowNull: false
   },
-  montant: {
+  Montant: {
     type: DataTypes.FLOAT,
     allowNull: false
   },
-  IdIdentification: {
+  IdIdentification: { // camelCase pour la clé étrangère
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
@@ -34,106 +33,111 @@ Payement.init({
   tableName: 'Payement',
   timestamps: false
 });
-// Fonction pour contrôler l'identification
-async function controllerIdentification(idIdentification) {
-    const identification = await Identification.getIdentificationById(idIdentification);
-    if (!identification) {
-        throw new Error('Identification inexistante.');
-    }
-    return identification;
+
+// Vérification de l'identification
+async function validateIdentification(IdIdentification) {
+  console.log("ID :: "+IdIdentification);
+  const identification = await Identification.findByPk(IdIdentification);
+  if (!identification) {
+    throw new Error('Identification inexistante.');
+  }
+  return identification;
 }
 
-// Fonction pour contrôler le montant
-async function controllerMontant(montant, idIdentification) {
-  const identification = await controllerIdentification(idIdentification);
-  // Récupérer le rôle de l'identification (par exemple: Admin, Utilisateur)
-  const IdCategorie = identification.IdCategorie;
-  // Rechercher le montant à payer pour ce rôle dans la base de données
-  const categorie = await Categorie.findOne({
-     where: { IdCategorie: IdCategorie }
-   });
- 
-   if (!categorie) {
-     throw new Error(`Aucune catégorie trouvée pour le rôle : ${IdCategorie}`);
-   }
- 
-   const montantAPayer = categorie.montantAPayer;
-  // Comparer les montants
-  if (montant > montantAPayer || montant < montantAPayer) {
-    throw new Error('Montant non égal au montant attendu, vérifiez les données.');
-  } else if (montant === montantAPayer) {
-    return { valid: true, message: 'Montant valide.' };
+// Vérification du Montant
+async function validateMontant(Montant, IdIdentification) {
+  const identification = await validateIdentification(IdIdentification);
+  const categorie = await Categorie.findByPk(identification.idCategorie);
+
+  if (!categorie) {
+    throw new Error(`Aucune catégorie trouvée pour l'identification ID : ${IdIdentification}`);
+  }
+
+  if (Montant !== categorie.MontantAPayer) {
+    throw new Error(
+      `Montant invalide. Montant attendu : ${categorie.MontantAPayer}, Montant fourni : ${Montant}`
+    );
   }
 }
-// Fonction pour contrôler la date de paiement
-async function controllerDatePayement(datePayement, idIdentification) {
-    // Extraire l'année de la date de paiement
-    const year = new Date(datePayement).getFullYear();
-    // Vérifier s'il y a un paiement pour cette identification et cette année
-    const paiementExistant = await Payement.findOne({
-        where: {
-            IdIdentification: idIdentification,
-            datePayement: sequelize.where(
-                sequelize.fn('YEAR', sequelize.col('datePayement')),
-                year
-            )
-        }
-    });
 
-    if (paiementExistant) {
-        throw new Error('Paiement déjà effectué pour cette année.');
+// Vérification de la date de paiement
+async function validateDatePayement(datePayement, IdIdentification) {
+  const year = new Date(datePayement).getFullYear();
+
+  const paiementExistant = await Payement.findOne({
+    where: {
+      IdIdentification,
+      datePayement: sequelize.where(
+        sequelize.fn('YEAR', sequelize.col('datePayement')),
+        year
+      )
     }
-    return { valid: true, message: 'Date de paiement valide.' };
+  });
+
+  if (paiementExistant) {
+    throw new Error('Un paiement pour cette année existe déjà.');
+  }
 }
 
+// Création d'un paiement
 Payement.createPayement = async (data) => {
-  const {datePayement, Montant, IdIdentification } = data;
-  console .log({datePayement, Montant, IdIdentification });
+  const { datePayement, Montant, IdIdentification } = data;
+
   try {
-    // await controllerIdentification(IdIdentification);
-    await controllerMontant(Montant, IdIdentification);
-    await controllerDatePayement(datePayement, IdIdentification);
-    // Formatage de la date en 'YYYY-MM-DD'
-    const date = new Date(datePayement);
-    console.log(date)
-    const formatedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
-    console.log(formatedDate);
-    // Requête brute pour insérer un paiement
-    const query = `
-      INSERT INTO Payement (datePayement, montant, IdIdentification)
-      VALUES (:formatedDate, :Montant, :IdIdentification)
-    `;
-     const paye = await sequelize.query(query, {
-      type: QueryTypes.INSERT,
-      replacements: {
-        formatedDate,
-        Montant,
-        IdIdentification
-      }
+    await validateIdentification(IdIdentification);
+    await validateMontant(Montant, IdIdentification);
+    await validateDatePayement(datePayement, IdIdentification);
+
+    const paiement = await Payement.create({
+      datePayement,
+      Montant,
+      IdIdentification
     });
 
-    console.log('Paiement inséré avec succès:', data);
-    return { success: true, message: 'Paiement inséré avec succès' , paye :paye};
+    console.log('Paiement inséré avec succès:', paiement);
+    return { success: true, message: 'Paiement inséré avec succès.', paiement };
   } catch (error) {
     console.error('Erreur lors de l’insertion du paiement:', error.message);
-    return { success: false, message:error.message, error: error };
+    return { success: false, message: error.message, error };
   }
 };
 
+// Récupération de tous les paiements
 Payement.getAllPayements = async () => {
-  return await Payement.findAll();
+  return await Payement.findAll({
+    include: {
+      model: Identification,
+      as: 'identification', // Alias défini dans la relation
+      attributes: ['nom', 'idCategorie']
+    }
+  });
 };
 
+// Récupération d'un paiement par ID
 Payement.getPayementById = async (id) => {
-  return await Payement.findByPk(id);
+  return await Payement.findByPk(id, {
+    include: {
+      model: Identification,
+      as: 'identification',
+      attributes: ['nom', 'idCategorie']
+    }
+  });
 };
 
+// Mise à jour d'un paiement
 Payement.updatePayement = async (id, data) => {
-  return await Payement.update(data, { where: { IdPayement: id } });
+  return await Payement.update(data, { where: { idPayement: id } });
 };
 
+// Suppression d'un paiement
 Payement.deletePayement = async (id) => {
-  return await Payement.destroy({ where: { IdPayement: id } });
+  return await Payement.destroy({ where: { idPayement: id } });
 };
+
+// Relations
+Payement.belongsTo(Identification, {
+  foreignKey: 'IdIdentification',
+  as: 'identification'
+});
 
 module.exports = Payement;

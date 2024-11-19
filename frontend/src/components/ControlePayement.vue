@@ -4,15 +4,36 @@
   
       <!-- Zone de saisie pour l'année -->
       <div class="annee-controller">
-        <label for="annee">Annee</label>
-        <input
+        <div>
+          <label for="annee">Annee</label>
+          <input
           type="text"
           id="annee"
           v-model="annee"
           placeholder="Entrer l'année"
-        />
+          />
+        </div>
+        <div>
+          <label for="diosezy">Diosezy</label>
+          <input
+          type="text"
+          id="diosezy"
+          v-model="diosezy"
+          placeholder="Entrer l'année"
+          />
+        </div>
+        <div>
+          <label for="faritra">Faritra</label>
+          <input
+          type="text"
+          id="faritra"
+          v-model="faritra"
+          placeholder="Entrer l'année"
+          />
+        </div>
         <button @click="fetchData">Controller</button>
       </div>
+
   
       <!-- Tableau pour Montant -->
       <div class="tableau-montant">
@@ -52,10 +73,10 @@
           </thead>
           <tbody>
             <tr v-for="detail in details" :key="detail.id">
-              <td>{{ detail.idIdentification }}</td>
+              <td>{{ detail.ididentification }}</td>
               <td>{{ detail.nom }}</td>
-              <td>{{ detail.nomCategorie }}</td>
-              <td>{{ detail.montantAPayer }}</td>
+              <td>{{ detail.nomcategorie }}</td>
+              <td>{{ detail.montantapayer }}</td>
             </tr>
           </tbody>
         </table>
@@ -79,7 +100,7 @@ export default {
   },
   computed: {
     total() {
-      return this.details.reduce((sum, detail) => sum + detail.montantAPayer, 0);
+      return this.details.reduce((sum, detail) => sum + detail.montantapayer, 0);
     },
   },
   methods: {
@@ -93,9 +114,9 @@ export default {
         const summary = data.summary;
         // Mettre à jour les données du composant avec la réponse
         
-        this.montantEstime = summary.montantEstime;
-        this.montantRecolte = summary.montantRecolte;
-        this.montantARecolter = summary.montantARecolter;
+        this.montantEstime = summary.montantestime;
+        this.montantRecolte = summary.montantrecolte;
+        this.montantARecolter = summary.montantarecolter;
         this.details = data.unpaidDetails;
         console.log("Données récupérées :", data);
       } catch (error) {

@@ -1,23 +1,24 @@
-// models/Categorie.js
 const { DataTypes, Model } = require('sequelize');
 const sequelize = require('../config/database');
-const Identification = require('./Identification'); // Ensure correct path
+const Identification = require('./Identification'); // Vérifiez le chemin si nécessaire
 
 class Categorie extends Model {}
 
 Categorie.init({
-  IdCategorie: {
+  idCategorie: { // Utilisation de `camelCase` pour PostgreSQL
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
   nomCategorie: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true // Ajout de la contrainte d'unicité si nécessaire
   },
   montantAPayer: {
-    type: DataTypes.FLOAT,
-    allowNull: false
+    type: DataTypes.FLOAT, // PostgreSQL prend en charge FLOAT
+    allowNull: false,
+    defaultValue: 0 // Valeur par défaut
   }
 }, {
   sequelize,
@@ -25,8 +26,5 @@ Categorie.init({
   tableName: 'Categorie',
   timestamps: false
 });
-
-// Relations
-// Categorie.hasMany(Identification, { foreignKey: 'IdCategorie' }); // Define the relationship
 
 module.exports = Categorie;

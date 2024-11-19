@@ -6,7 +6,8 @@ USE scoot;
 CREATE TABLE IF NOT EXISTS Identification (
     idIdentification INT AUTO_INCREMENT PRIMARY KEY,                -- Code unique d'identification
     nom VARCHAR(100) NOT NULL,                       -- Nom de l'identification
-    idCategorie INT NOT NULL                            -- Clé étrangère pour le rôle
+    idCategorie INT NOT NULL,
+    idFaritra                          -- Clé étrangère pour le rôle
 );
 
 -- Création de la table Categorie

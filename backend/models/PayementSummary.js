@@ -21,7 +21,7 @@ const PayementSummary = {
           Payement AS p
           ON iden.idIdentification = p.idIdentification
       WHERE 
-          YEAR(p.DatePayement) = :year -- Limiter les paiements à l'année spécifiée
+          DATE_PART('year', p.DatePayement) = :year -- Limiter les paiements à l'année spécifiée
           OR p.DatePayement IS NULL;
     `;
     

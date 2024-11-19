@@ -20,6 +20,8 @@ router.get('/', async (req, res, next) => {
             unpaidDetails,
         };
 
+        console.log (summary);
+
         res.status(200).json(response); // Retourne les montants et les détails sous forme JSON
     } catch (error) {
         console.error('Erreur lors de la récupération des données de paiement:', error);

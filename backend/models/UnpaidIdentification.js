@@ -26,7 +26,7 @@ const UnpaidIdentification = {
               FROM 
                   Payement AS p
               WHERE 
-                  YEAR(p.DatePayement) = :year
+                  DATE_PART('year', p.DatePayement) = :year
           );
     `;
 

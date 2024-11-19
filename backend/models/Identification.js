@@ -1,4 +1,3 @@
-// models/Identification.js
 const { DataTypes, Model } = require('sequelize');
 const sequelize = require('../config/database');
 const Categorie = require('./Categorie');
@@ -6,7 +5,7 @@ const Categorie = require('./Categorie');
 class Identification extends Model {}
 
 Identification.init({
-  IdIdentification: {
+  idIdentification: { // PostgreSQL préfère les noms en camelCase ou snake_case sans majuscules mixtes
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
@@ -15,12 +14,12 @@ Identification.init({
     type: DataTypes.STRING,
     allowNull: false
   },
-  IdCategorie: {
+  idCategorie: { // Renommé pour correspondre à PostgreSQL
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
       model: Categorie,
-      key: 'IdCategorie'
+      key: 'idCategorie' // Correspond à la clé primaire du modèle "Categorie"
     }
   }
 }, {
@@ -29,7 +28,8 @@ Identification.init({
   tableName: 'Identification',
   timestamps: false
 });
-// Functions to manipulate data
+
+// Fonctions pour manipuler les données
 Identification.createIdentification = async (data) => {
   return await Identification.create(data);
 };
@@ -43,11 +43,11 @@ Identification.getIdentificationById = async (id) => {
 };
 
 Identification.updateIdentification = async (id, data) => {
-  return await Identification.update(data, { where: { IdIdentification: id } });
+  return await Identification.update(data, { where: { idIdentification: id } });
 };
 
 Identification.deleteIdentification = async (id) => {
-  return await Identification.destroy({ where: { IdIdentification: id } });
+  return await Identification.destroy({ where: { idIdentification: id } });
 };
 
 module.exports = Identification;

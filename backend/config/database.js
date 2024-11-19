@@ -1,9 +1,9 @@
 // config/database.js
 const { Sequelize } = require('sequelize');
 
-const sequelize = new Sequelize('scoot', 'root', '', {
+const sequelize = new Sequelize('scoot', 'postgres', 'itu16', {
   host: 'localhost',
-  dialect: 'mysql' // ou 'postgres', 'sqlite', 'mariadb' selon ta base de données
+  dialect: 'postgres' // ou 'postgres', 'sqlite', 'mariadb' selon ta base de données
 });
 
 module.exports = sequelize;
